@@ -2,6 +2,8 @@ import 'package:demo_2/data.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
+import 'main.dart';
+
 class Second extends StatefulWidget {
   const Second({super.key});
 
@@ -29,15 +31,24 @@ class _SecondState extends State<Second> {
                 return ListView.builder(
                   itemCount: l.length,
                   itemBuilder: (context, index) {
-                    return ListTile(trailing: IconButton(onPressed: () {
-                      String sql="delete from Demo where id=${l[index]['id']}";
-                      database!.rawDelete(sql).then((value) {
-                        print("delete the recode ${l[index]['id']}");
-                      });
-                      setState(() {
+                    return ListTile(trailing: Wrap(
+                      children: [
+                        IconButton(onPressed: () {
+                          String sql="delete from Demo where id=${l[index]['id']}";
+                          database!.rawDelete(sql).then((value) {
+                            print("delete the recode ${l[index]['id']}");
+                          });
+                          setState(() {
 
-                      });
-                    }, icon: Icon(Icons.delete)),
+                          });
+                        }, icon: Icon(Icons.delete)),
+                        IconButton(onPressed: () {
+                     Navigator.push(context, MaterialPageRoute(builder: (context) {
+                       return Demo(l[index]);
+                     },));
+                        }, icon: Icon(Icons.edit)),
+                      ],
+                    ),
                       title: Text("${l[index]['name']}"),
                     );
                   },
